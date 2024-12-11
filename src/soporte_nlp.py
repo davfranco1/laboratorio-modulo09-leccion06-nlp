@@ -99,6 +99,10 @@ class ExploracionText:
         plt.show()
 
     def limpiar_textos(self, columna_limpia):
+        print(f"En la columna {self.text_column} hay {self.df[self.text_column].isna().sum()} nulos.")
+        self.df.dropna(subset=self.text_column, inplace=True)
+        self.df.reset_index(drop=True, inplace=True)
+        print(f"Se han eliminado los nulos de la columna {self.text_column}.")
         # Aplicar limpieza
         print("Limpiando el texto...")
         self.df[columna_limpia] = self.df[self.text_column].apply(self._limpiar_texto)
@@ -724,3 +728,8 @@ def buscar_similares(df, busqueda, similarity, columna_contenido):
         plt.text(value + 0.02, i, f"{value:.2f}", va='center', fontsize=10)
 
     plt.tight_layout()
+
+
+def sentimientos(texto):
+    sia = SentimentIntensityAnalyzer()
+    return sia.polarity_scores(texto)
